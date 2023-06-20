@@ -3,7 +3,7 @@
 ## Installation
 
 Install the package by the following command,
-composer require urs/usersregistration
+composer require snosborn/laraveljwtauth
 
 ## Add Provider
 
@@ -11,7 +11,7 @@ Add the provider to your config/app.php into provider section if using lower ver
 of laravel,
 
 Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-URS\usersregistration\UserServiceProvider::class,
+snosborn\laraveljwtauth\UserServiceProvider::class,
 
 ## Add Facade
 
@@ -52,5 +52,7 @@ Add the route middleware in kernel file
 Run the following command to publish the files in package 
 
 php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider" --force
+
 php artisan jwt:secret
-php artisan vendor:publish --force --provider="URS\usersregistration\UserServiceProvider"
+
+php artisan vendor:publish --force --provider="snosborn\laraveljwtauth\UserServiceProvider"
