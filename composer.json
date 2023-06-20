@@ -24,5 +24,6 @@
                 "snosborn/laraveljwtauth\\UserServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev-master"
 }
