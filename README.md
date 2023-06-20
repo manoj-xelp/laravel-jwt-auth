@@ -3,7 +3,7 @@
 ## Installation
 
 Install the package by the following command,
-composer require snosborn/laraveljwtauth
+composer require snosborn/laraveljwtauth:dev-master
 
 ## Add Provider
 
