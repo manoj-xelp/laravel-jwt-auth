@@ -9,7 +9,7 @@
     },
     "autoload": {
         "psr-4": {
-            "snosborn/laraveljwtauth\\": "src/"
+            "snosborn\\laraveljwtauth\\": "src/"
         }
     },
     "authors": [
@@ -21,9 +21,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "snosborn/laraveljwtauth\\UserServiceProvider"
+                "snosborn\\laraveljwtauth\\UserServiceProvider"
             ]
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
