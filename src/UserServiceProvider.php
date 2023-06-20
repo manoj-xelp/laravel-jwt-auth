@@ -1,6 +1,6 @@
 <?php
 
-namespace URS\usersregistration;
+namespace snosborn\laraveljwtauth;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
