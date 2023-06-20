@@ -1,5 +1,5 @@
 {
-    "name": "laravel/jwt_auth",
+    "name": "snosbornlaraveljwtauth",
     "version": "1.0",
     "description": "This package is for user registration and login",
     "license": "MIT",
@@ -9,7 +9,7 @@
     },
     "autoload": {
         "psr-4": {
-            "URS\\usersregistration\\": "src/"
+            "snosbornlaraveljwtauth\\": "src/"
         }
     },
     "authors": [
@@ -21,7 +21,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "URS\\usersregistration\\UserServiceProvider"
+                "snosbornlaraveljwtauth\\UserServiceProvider"
             ]
         }
     }
