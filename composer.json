@@ -1,5 +1,5 @@
 {
-    "name": "laravel-jwt-auth",
+    "name": "laravel/jwt_auth",
     "version": "1.0",
     "description": "This package is for user registration and login",
     "license": "MIT",
