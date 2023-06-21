@@ -40,7 +40,7 @@ class UserServiceProvider extends ServiceProvider
             __DIR__.'/User.php' => app_path('Models/User.php'),
             __DIR__.'/ActivityLog.php' => app_path('Models/ActivityLog.php'),
             __DIR__.'/UserController.php' => app_path('Http/Controllers/UserController.php'),
-            __DIR__.'/routes/9/api.php' => app_path('./../routes/api.php'),
+            __DIR__.'/routes/10/api.php' => app_path('./../routes/api.php'),
             __DIR__.'/SendMails.php' => app_path('Mail/SendMails.php'),
             __DIR__.'/ValidateUserMiddleware.php' => app_path('Http/Middleware/ValidateUserMiddleware.php'),
             __DIR__.'/verify.blade.php' => app_path('./../resources/views/verify.blade.php'),
