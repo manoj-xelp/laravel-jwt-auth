@@ -36,7 +36,9 @@ class UserServiceProvider extends ServiceProvider
         }
         
         $this->publishes([
+            __DIR__.'/migrations/create_activity_logs_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_activity_logs_table.php'),
             __DIR__.'/User.php' => app_path('Models/User.php'),
+            __DIR__.'/ActivityLog.php' => app_path('Models/ActivityLog.php'),
             __DIR__.'/UserController.php' => app_path('Http/Controllers/UserController.php'),
             __DIR__.'/routes/9/api.php' => app_path('./../routes/api.php'),
             __DIR__.'/SendMails.php' => app_path('Mail/SendMails.php'),

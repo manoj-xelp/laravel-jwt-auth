@@ -28,14 +28,13 @@ class UserController extends Controller
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'dial_code'=> 'numeric',
-            'phone_number' => 'numeric',
+            'mobile_number' => 'numeric',
             'date_of_birth' => 'date'
         ];
         $validator = Validator::make($requestObject, $rules);
         if ($validator->fails()) {
             return response()->json(['success' => false, 'error' => $validator->messages()->first()], 400);
         }
-        
 
         $created_user = User::create([
             "name" => $request->first_name.' '.$request->last_name,
@@ -44,8 +43,8 @@ class UserController extends Controller
             "email" => $request->email,
             "password" => Hash::make($request->password),
             "username" => $request->uname,
-            "phone_number" => $request->phone_number,
-            "photo_url" => $request->photo_url,
+            "dial_code" => $request->dial_code,
+            "mobile_number" => $request->phone_number,
             "about_me" => $request->about_me,
             "date_of_birth" => $request->date_of_birth,
             "verification_code" => $this->generateToken(65)
@@ -80,7 +79,7 @@ class UserController extends Controller
         try {
             $user_email = $user_details->email;
             //$link = url("/api/verify?token=" . $user_details->verification_code);
-            $link = env('WEBSITE')."/redirect.php?type=verify&params=".urlencode('token='.$user_details->verification_code);
+            $link = env('APP_URL')."/redirect.php?type=verify&params=".urlencode('token='.$user_details->verification_code);
             $mail_details = array('email' => $user_email, "link" => $link);
 
             $subject='Confirm your email and start exploring right away!';
