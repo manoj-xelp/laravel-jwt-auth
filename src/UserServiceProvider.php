@@ -34,9 +34,19 @@ class UserServiceProvider extends ServiceProvider
                 __DIR__.'/migrations/create_users_table.php' => database_path('migrations/' .$filename),
             ], 'migrations');
         }
+
+        $filename1=$this->migrationExists('create_activity_logs_table');
+        if ($filename1 === false) {
+            $this->publishes([
+                __DIR__.'/migrations/create_activity_logs_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_activity_logs_table.php'),
+            ], 'migrations');
+        }else {
+            $this->publishes([
+                __DIR__.'/migrations/create_activity_logs_table.php' => database_path('migrations/' . $filename1),
+            ], 'migrations');
+        }
         
         $this->publishes([
-            __DIR__.'/migrations/create_activity_logs_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_activity_logs_table.php'),
             __DIR__.'/User.php' => app_path('Models/User.php'),
             __DIR__.'/ActivityLog.php' => app_path('Models/ActivityLog.php'),
             __DIR__.'/UserController.php' => app_path('Http/Controllers/UserController.php'),

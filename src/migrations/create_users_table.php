@@ -33,7 +33,7 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->string('referal_code')->nullable();
             $table->bigInteger('refered_by')->nullable();
-            $table->foriegn('refered_by')->references('id')->on('users');
+            $table->foreign('refered_by')->references('id')->on('users');
             $table->date('date_of_birth')->nullable()->comment("user's date of birth");
             $table->string('verification_code')->nullable();
             $table->integer('status')->default(0)->comment("0-unverified 1-verified -1-deleted");
