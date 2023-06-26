@@ -13,6 +13,7 @@ use App\Mail\SendMails;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Models\ActivityLog;
 
 class UserController extends Controller
 {
@@ -29,7 +30,8 @@ class UserController extends Controller
             'last_name' => 'required|max:255',
             'dial_code'=> 'numeric',
             'mobile_number' => 'numeric',
-            'date_of_birth' => 'date'
+            'date_of_birth' => 'date',
+            'source' => 'reqired|string'
         ];
         $validator = Validator::make($requestObject, $rules);
         if ($validator->fails()) {
@@ -51,8 +53,14 @@ class UserController extends Controller
         ]);
 
         if ($created_user) {
+            $activity_store=ActivityLog::create([
+                "user_id" => $created_user->id,
+                "activity" => "signup",
+                "source" => $request->source
+            ]);
+
             $this->sendEmailVerificationMail($created_user);
-            $token = Auth::login($created_user);
+            //$token = Auth::login($created_user);
             return response()->json(['success' => true, 'user_id'=>$created_user->id], 200);
         } else {
             return response()->json(['success' => false, 'error' => 'Looks like there is an issue on our side, we are working on fixing it.'], 500);
@@ -99,6 +107,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
+            'source' => 'required|string'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -131,6 +140,11 @@ class UserController extends Controller
 
             $verified = Hash::check($request->password, $user_details->password);
             if ($verified) {
+                $activity_store=ActivityLog::create([
+                    "user_id" => $user_details->id,
+                    "activity" => "login",
+                    "source" => $request->source
+                ]);
                 return $this->createNewToken($token);
             }
             
@@ -162,6 +176,11 @@ class UserController extends Controller
             $data = User::where('verification_code', $request->token)->first();
             if(!empty($data)){
                 User::where('verification_code', $request->token)->update(["verification_code" => null]);
+                $activity_store=ActivityLog::create([
+                    "user_id" => $data->id,
+                    "activity" => "verify_email",
+                    "source" => $request->source
+                ]);
                 return response()->json(['success' => true, 'message' => "User Email verified successfully"], 200);
 
             }else{

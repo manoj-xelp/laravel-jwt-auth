@@ -17,7 +17,7 @@ class CreateActivityLogsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->enum('activity',['signup','login','reset_password','invite','deactivate_account']);
+            $table->enum('activity',['signup','login','reset_password','invite','deactivate_account','verify_email']);
             $table->enum('source',['dashboard','app']);
             $table->timestamps();
             $table->softDeletes();
