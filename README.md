@@ -67,7 +67,10 @@ Run the following command to publish the package files
     php artisan route:cache
 
 # Optional publish assets
-# php artisan vendor:publish --tag=request-docs-assets
+
+    php artisan vendor:publish --tag=request-docs-assets
+
+# Optional middleware
 
 (optional) Add the following middleware to your API, so that the SQL logs and model events are captured.
 
