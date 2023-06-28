@@ -3,22 +3,23 @@
 ## Installation
 
 Install the package by the following command,
-composer require snosborn/laraveljwtauth:VERSION
+
+    composer require snosborn/laraveljwtauth:VERSION
 
 ## Add Provider
 
 Add the provider to your config/app.php into provider section if using lower version
 of laravel,
 
-Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-snosborn\laraveljwtauth\UserServiceProvider::class,
+    Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+    snosborn\laraveljwtauth\UserServiceProvider::class,
 
 ## Add Facade
 
 Add the Facade to your config/app.php into aliases section,
 
-'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+    'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+    'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
 ## Add Guard in Auth file
 
@@ -45,7 +46,7 @@ Add the guard for api in config\auth.php file
 
 Add the route middleware in kernel file 
 
-'validateuser' =>\App\Http\Middleware\ValidateUserMiddleware::class,
+    'validateuser' =>\App\Http\Middleware\ValidateUserMiddleware::class,
 
 ## Publish the Assets
 
@@ -56,3 +57,26 @@ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServicePro
 php artisan jwt:secret
 
 php artisan vendor:publish --force --provider="snosborn\laraveljwtauth\UserServiceProvider"
+
+## API DOC OPEN API 3.0
+
+Run the following command to publish the package files
+
+    php artisan vendor:publish --tag=request-docs-config
+
+    php artisan route:cache
+
+# Optional publish assets
+# php artisan vendor:publish --tag=request-docs-assets
+
+(optional) Add the following middleware to your API, so that the SQL logs and model events are captured.
+
+    app/Http/Kernel.php
+
+        'api' => [
+            ...
+            \Rakutentech\LaravelRequestDocs\LaravelRequestDocsMiddleware::class,
+            ... and so on
+
+Usage: 
+    View in the browser on /request-docs/
