@@ -12,6 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable implements JWTSubject
 {
     use  HasFactory, Notifiable;
+    use SoftDeletes;
+
+    # database connection
+    public $table = 'users';
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -53,4 +58,20 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+    
+    public function blocks()
+    {
+        return $this->belongsToMany(User::class, 'blocks','blocked_id', 'blocker_id')->withTimestamps();;
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'leader_id', 'follower_id')->withTimestamps();
+    }
+
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'leader_id')->withTimestamps();
+    }
+
 }

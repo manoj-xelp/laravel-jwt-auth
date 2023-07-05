@@ -10,7 +10,7 @@ Route::prefix('v1')->group(function () {
         Route::get('welcome_user', [UserController::class,'welcomessss']);
         Route::post('refresh_token', [UserController::class,'refresh']);
         Route::group(['middleware' => ['validateuser']], function(){
-            Route::get('welcome1', [UserController::class,'welcomessss']);
+            Route::get('user/info', [UserController::class,'getUserInfo']);
         });
     });
 });

@@ -12,7 +12,7 @@ Add the provider to your config/app.php into provider section if using lower ver
 of laravel,
 
     Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-    snosborn\laraveljwtauth\UserServiceProvider::class,
+    snosborn\laraveljwtauth\app\Providers\UserServiceProvider::class,
 
 ## Add Facade
 
@@ -52,11 +52,11 @@ Add the route middleware in kernel file
 
 Run the following command to publish the files in package 
 
-php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider" --force
+    php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider" --force
 
-php artisan jwt:secret
+    php artisan jwt:secret
 
-php artisan vendor:publish --force --provider="snosborn\laraveljwtauth\UserServiceProvider"
+    php artisan vendor:publish --force --provider="snosborn\laraveljwtauth\UserServiceProvider"
 
 ## API DOC OPEN API 3.0
 
@@ -83,3 +83,10 @@ Run the following command to publish the package files
 
 Usage: 
     View in the browser on /request-docs/
+
+# Environment Variable changes
+
+Add below mentioned variables to .env 
+
+    SERVER_URL=BACKEND_SERVER_URL
+
