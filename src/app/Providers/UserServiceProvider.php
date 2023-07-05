@@ -1,6 +1,6 @@
 <?php
 
-namespace snosborn\laraveljwtauth;
+namespace App\Providers;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
