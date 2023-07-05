@@ -56,7 +56,7 @@ Run the following command to publish the files in package
 
     php artisan jwt:secret
 
-    php artisan vendor:publish --force --provider="snosborn\laraveljwtauth\UserServiceProvider"
+    php artisan vendor:publish --force --provider="snosborn\laraveljwtauth\app\Providers\UserServiceProvider"
 
 ## API DOC OPEN API 3.0
 
