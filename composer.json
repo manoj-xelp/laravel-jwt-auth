@@ -22,7 +22,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "snosborn\\laraveljwtauth\\app\\Providers\\UserServiceProvider"
+                "snosborn\\laraveljwtauth\\src\\app\\Providers\\UserServiceProvider"
             ]
         }
     }
