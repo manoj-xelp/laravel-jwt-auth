@@ -12,7 +12,7 @@ Add the provider to your config/app.php into provider section if using lower ver
 of laravel,
 
     Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-    snosborn\laraveljwtauth\app\Providers\UserServiceProvider::class,
+    snosborn\laraveljwtauth\UserServiceProvider::class,
 
 ## Add Facade
 
@@ -56,7 +56,7 @@ Run the following command to publish the files in package
 
     php artisan jwt:secret
 
-    php artisan vendor:publish --force --provider="snosborn\laraveljwtauth\app\Providers\UserServiceProvider"
+    php artisan vendor:publish --force --provider="snosborn\laraveljwtauth\UserServiceProvider"
 
 ## API DOC OPEN API 3.0
 
