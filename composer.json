@@ -11,10 +11,7 @@
     "autoload": {
         "psr-4": {
             "snosborn\\laraveljwtauth\\": "src/"
-        },
-        "files": [
-            "app/Helpers/Helper.php"
-        ]
+        }
     },
     "authors": [
         {
