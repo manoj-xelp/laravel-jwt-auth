@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Closure;
 
 use Illuminate\Http\Request;
@@ -19,7 +21,8 @@ class ValidateUserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = App('request')->header('access_token');
+        //$token = App('request')->header('access_token');
+        $token = $request->bearerToken();
         $stored_token = User::where('auth_token', $token)->first();
         
         if ($token && $stored_token) {

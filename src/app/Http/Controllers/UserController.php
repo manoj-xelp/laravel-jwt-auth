@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
+use Carbon\Carbon;
 use App\Mail\SendMails;
 use Exception;
 use Illuminate\Support\Facades\Mail;
@@ -21,38 +22,29 @@ use App\Http\Requests\CreateUser;
 use App\Http\Requests\UserLogin;
 use App\Http\Requests\VerifyUser;
 use App\Http\Requests\UserInfo;
+use App\Http\Requests\UpdateUser;
+use App\Http\Requests\UploadFile;
+use App\Http\Requests\ForgetPassword;
+use App\Http\Requests\UserLogout;
+use App\Http\Requests\ResetPassword;
 
 class UserController extends Controller
 {
     //global variable to access contants
     private $constants;
     private $user_profile_base_url;
+    private $reset_password_url;
 
     public function __construct()
     {
         $this->constants = Config::get('constants');
         $this->user_profile_base_url = $this->constants['SERVER_URL'].$this->constants['USER_PROFILE_PATH'];
+        $this->reset_password_url = $this->constants['RESET_PASSWORD_URL'];
     }
 
     public function create(CreateUser $request)
     {
-        try{
-            $requestObject = $request->all();
-            $rules = [
-                'first_name' => 'required|string|max:100',
-                'last_name' => 'required|string|max:100',
-                'email' => 'required|email|max:255|unique:users',
-                'password' => 'required|min:6',
-                'dial_code'=> 'string',
-                'mobile_number' => 'numeric',
-                'date_of_birth' => 'date',
-                'source' => 'required|string'
-            ];
-            $validator = Validator::make($requestObject, $rules);
-            if ($validator->fails()) {
-                return response()->json(['success' => false, 'error' => $validator->messages()->first()], 400);
-            }
-    
+        try{    
             $created_user = User::create([
                 "name" => $request->first_name.' '.$request->last_name,
                 "first_name" => $request->first_name,
@@ -63,7 +55,7 @@ class UserController extends Controller
                 "mobile_number" => $request->mobile_number,
                 "about_me" => $request->about_me,
                 "date_of_birth" => $request->date_of_birth,
-                "verification_code" => $this->generateToken(65)
+                "verification_code" => generateToken(65)
             ]);
     
             if ($created_user) {
@@ -75,7 +67,7 @@ class UserController extends Controller
     
                 $this->sendEmailVerificationMail($created_user,$request->source);
                 //$token = Auth::login($created_user);
-                return response()->json(['success' => true, 'user_id'=>$created_user->id], 200);
+                return response()->json(['success' => true, 'message'=>'Thanks for signing up. Your account has been created. Verification link has been sent to registered email.','user_id'=>$created_user->id], 200);
             } else {
                 return response()->json(['success' => false, 'error' => 'Looks like there is an issue on our side, we are working on fixing it.'], 500);
             }
@@ -85,27 +77,12 @@ class UserController extends Controller
         }
     }
 
-    function generateToken($length)
-    {
-        $token = "";
-        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $codeAlphabet .= "abcdefghijklmnopqrstuvwxyz";
-        $codeAlphabet .= "0123456789";
-        $max = strlen($codeAlphabet);
-
-        for ($i = 0; $i < $length; $i++) {
-            $token .= $codeAlphabet[random_int(0, $max - 1)];
-        }
-
-        return $token;
-    }
-
     public function sendEmailVerificationMail($user_details,$source)
     {
         try {
             $user_email = $user_details->email;
             //$link = url("/api/verify?token=" . $user_details->verification_code);
-            $link = env('APP_URL')."/api/v1/auth/verify_email?email=".$user_email."&source=".$source."&type=verify&token=".$user_details->verification_code;
+            $link = env('SERVER_URL')."/api/v1/auth/verify_email?email=".$user_email."&source=".$source."&type=verify&token=".$user_details->verification_code;
             $mail_details = array('email' => $user_email, "link" => $link);
 
             $subject='Confirm your email and start exploring right away!';
@@ -123,14 +100,6 @@ class UserController extends Controller
     public function login(UserLogin $request)
     {
         try{
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
-                'password' => 'required|string|min:6',
-                'source' => 'required|string'
-            ]);
-            if ($validator->fails()) {
-                return response()->json($validator->errors(), 422);
-            }
             $credentials = $request->only('email', 'password');
     
             $token = Auth::attempt($credentials);
@@ -181,14 +150,14 @@ class UserController extends Controller
         
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 1444,
+            'token_type' => 'Bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
             'user' => $user
         ],200);
     }
 
-    public function refresh() {
-        return $this->createNewToken(auth()->refresh());
+    public function refresh(Request $request) {
+        return $this->createNewToken(Auth::refresh());
     }
 
     public function verifyUser(VerifyUser $request)
@@ -302,6 +271,206 @@ class UserController extends Controller
         $user_details->following = $following;
         return $user_details;
     }
+
+    public function updateUser(UpdateUser $request)
+    {
+        try{
+            $update=User::where('id',$request->logged_in_user->id)
+                ->update([
+                    "name"=> $request->first_name.' '.$request->last_name,
+                    "first_name"=> $request->first_name,
+                    "last_name"=> $request->last_name,
+                    "username" => strtolower($request->username),
+                    "dial_code"=> $request->dial_code,
+                    "mobile_number"=> $request->mobile_number,
+                    "date_of_birth"=> $request->date_of_birth,
+                    "about_me"=> $request->about_me,
+                    "profile_pic"=> $request->profile_pic
+                ]);
+            
+            if($update){
+                return response()->json(['success' => true, 'message'=>'Your account details have been saved.', 'user_details' => $update, 'user_profile_base_url' => $this->user_profile_base_url], 200);
+            }else{
+                return response()->json(['success' => false, 'error' => 'Something went wrong! Please try again later.'], 502);
+            }
+            
+        }catch(\Exception $error){
+            Log::error($error);
+            return response()->json(['success' => false, 'error' => 'Internal server error.'], 500);
+        }
+    }
+
+    public function uploadSingleFile(UploadFile $request)
+    {
+        try{
+            $upload_path = $this->constants['UNDEFINED_PATH'];
+            $type = $request->type;
+            if($type == "USER_PROFILE"){
+                $upload_path = $this->constants['USER_PROFILE_PATH'];
+            }
+            if ($request->hasFile('file')) {
+                if ($request->file('file')->isValid()) {
+                    $file_name = fileUpload($type, $request->file('file'), $upload_path);
+                    if(isset($file_name) && $file_name != -1){
+                        return response()->json(['success' => true, 'message'=>'Uploaded successfully.', 'file_name' => $file_name, 'base_url' => $this->constants['SERVER_URL'].$upload_path], 200);
+                    }else{
+                        return response()->json(['success' => false, 'error' => 'Something went wrong! Please try again later.'], 500);
+                    }
+                }
+            }else{
+                return response()->json(['success' => false, 'error' => 'File is required to upload.'], 400);
+            }
+        }catch(\Exception $error){
+            Log::error($error);
+            return response()->json(['success' => false, 'error' => 'Internal server error.'], 500);
+        }
+    }
+
+    public function logout(UserLogout $request)
+    {
+        try{
+            $user = User::where('id', $request->logged_in_user->id)->first();
+            $user->auth_token = null;
+            $user->save();
+
+            $activity_store=ActivityLog::create([
+                "user_id" => $user->id,
+                "activity" => "logout",
+                "source" => $request->source
+            ]);
+
+            Auth::logout();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully logged out',
+            ], 200);
+
+        }catch(\Exception $error){
+            Log::error($error);
+            return response()->json(['success' => false, 'error' => 'Internal server error.'], 500);
+        }
+    }
+
+    public function forgotPassword(ForgetPassword $request)
+    {
+        try {
+            $verification_token = generateToken(65);
+            $user_details  = User::where('email', $request->email)->select()->first();
+            if ($user_details) {
+                
+                // Check activation
+                if ($user_details->status == 0) {
+                    if (!$user_details->verification_code) {
+                        $user_details->verification_code = generateToken(65);
+                        $user_details->save();
+                    }
+                    $this->sendEmailVerificationMail($user_details,$request->source);
+                    return response()->json(['success' => false, 'error' => "Before you can reset your password, please verify your email address."], 400);
+                }
+                
+                // Use old token
+                if (isset($user_details->verification_code) && $user_details->verification_code != "") {
+                    $verification_token = $user_details->verification_code;
+                }
+                
+                // Check deactivation
+                if ($user_details->status == -1) {
+                    return response()->json(['success' => false, 'error' => "Account Deactivated."], 400);
+                }
+                $user_email = $user_details->email;
+                $user_details->verification_code = $verification_token;
+                $user_details->save();
+
+                $link = $this->reset_password_url."?type=resetpassword&source=".$request->source."&token=".$verification_token;
+                $mail_details = array('name' => $user_details->name, "link" => $link);
+                $subject="Reset your password";
+                $view='forgotpassword';
+                $cc=[];
+                $bcc=[];
+
+                Mail::to($user_email)->queue(new SendMails($mail_details,$subject,$view,$cc,$bcc));
+                $activity_store=ActivityLog::create([
+                    "user_id" => $user_details->id,
+                    "activity" => "forgot_password",
+                    "source" => $request->source
+                ]);
+                return response()->json(['success' => true, 'message' => 'Password reset link successfully sent to your email.'], 200);
+            } else {
+                return response()->json(['success' => false, 'error' => 'Invalid Email Provided.'], 400);
+            }
+        } catch (\Exception $error) {
+            Log::error($error);
+            return response()->json(['success' => false, 'error' => 'Looks like there is an issue on our side, we are working on fixing it.'], 500);
+        }
+    }
+
+    public function resetPasswordValidation(ResetPassword $request)
+    {
+        try {
+            $user_details  = User::where('verification_code', $request->token)->first();
+            if ($user_details) {
+                return view('resetpassword', ['token' => $request->token, 'source' => $request->source]);
+            } else {
+                return view('useractioninfo')->with(["type" => "VALIDATION_ERROR"]);
+            }
+        } catch (\Exception $error) {
+            Log::error($error);
+            return view('useractioninfo')->with(["type" => "SERVER_ERROR"]);
+        }
+    }
+
+    public function resetPassword(ResetPassword $request)
+    {
+        try {
+            $credentials = $request->all();
+            $rules = [
+                'token' => 'required|string',
+                'source' => 'required|in:dashboard,app',
+                'password' => 'required|min:8|confirmed|max:20|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
+                'password_confirmation' => 'required|min:8|max:20',
+            ];
+            $validator = Validator::make($credentials, $rules);
+            if ($validator->fails()) {
+                return view('useractioninfo')->with(["type" => "VALIDATION_ERROR"]);
+            }
+
+            $user_details  = User::where('verification_code', $request->token)->first();
+            if ($user_details) {
+                $user_details->password = Hash::make($request->password);
+                $user_details->verification_code = null;
+                $user_details->save();
+                $details = [
+                    "type" => "PASSWORD_CHANGED",
+                    "email" => $user_details->email,
+                    "dateTime" => Carbon::now('Asia/Kolkata')->toDayDateTimeString()
+                ];
+
+                $mail = $user_details->email;
+                $mail_details=$details;
+
+                $subject="Your password has been changed";
+                $view='useractioninfo';
+                $cc_mail=[];
+                $bcc_mail=[];
+                Mail::to($mail)->queue(new SendMails($mail_details,$subject,$view,$cc_mail,$bcc_mail));
+                
+                $activity_store=ActivityLog::create([
+                    "user_id" => $user_details->id,
+                    "activity" => "reset_password",
+                    "source" => $request->source
+                ]);
+
+                return view('useractioninfo',$details);
+
+            } else {
+                return view('useractioninfo')->with(["type" => "PASSWORD_NOT_CHANGED"]);
+            }
+        } catch (\Exception $error) {
+            Log::error($error);
+            return view('useractioninfo')->with(["type" => "SERVER_ERROR"]);
+        }
+    }
+
 
 
 }

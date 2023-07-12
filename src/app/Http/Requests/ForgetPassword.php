@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUser extends FormRequest
+class ForgetPassword extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,8 @@ class CreateUser extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required|string|max:100',
-            'last_name' => 'required|string|max:100',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6',
-            'dial_code'=> 'nullable|string',
-            'mobile_number' => 'nullable|numeric',
-            'date_of_birth' => 'nullable|date',
-            'source' => 'required|string|in:dashboard,app'
+            "email" => "required|email|exists:users,email",
+            "source" => "required|in:dashboard,app"
         ];
     }
 }

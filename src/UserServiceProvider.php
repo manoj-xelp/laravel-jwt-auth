@@ -73,6 +73,8 @@ class UserServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/resources/views/verify.blade.php' => app_path('./../resources/views/verify.blade.php'),
             __DIR__.'/resources/views/useractioninfo.blade.php' => app_path('./../resources/views/useractioninfo.blade.php'),
+            __DIR__.'/resources/views/forgotpassword.blade.php' => app_path('./../resources/views/forgotpassword.blade.php'),
+            __DIR__.'/resources/views/resetpassword.blade.php' => app_path('./../resources/views/resetpassword.blade.php'),
         ],'above8');
 
         //Publish Routes*****
@@ -101,6 +103,11 @@ class UserServiceProvider extends ServiceProvider
             __DIR__.'/app/Http/Requests/UserInfo.php' => app_path('Http/Requests/UserInfo.php'),
             __DIR__.'/app/Http/Requests/UserLogin.php' => app_path('Http/Requests/UserLogin.php'),
             __DIR__.'/app/Http/Requests/VerifyUser.php' => app_path('Http/Requests/VerifyUser.php'),
+            __DIR__.'/app/Http/Requests/UpdateUser.php' => app_path('Http/Requests/UpdateUser.php'),
+            __DIR__.'/app/Http/Requests/UploadFile.php' => app_path('Http/Requests/UploadFile.php'),
+            __DIR__.'/app/Http/Requests/ForgetPassword.php' => app_path('Http/Requests/ForgetPassword.php'),
+            __DIR__.'/app/Http/Requests/UserLogout.php' => app_path('Http/Requests/UserLogout.php'),
+            __DIR__.'/app/Http/Requests/ResetPassword.php' => app_path('Http/Requests/ResetPassword.php'),
         ],'above8');
 
         //Publish Models*****
@@ -114,6 +121,16 @@ class UserServiceProvider extends ServiceProvider
         //Publish Mails****
         $this->publishes([
             __DIR__.'/app/Mail/SendMails.php' => app_path('Mail/SendMails.php'),
+        ],'above8');
+
+        //Publish Assets****
+        $this->publishes([
+            __DIR__.'/assets/*' => public_path('assets/*'),
+        ],'above8');
+        
+        //Publish Helpers****
+        $this->publishes([
+            __DIR__.'/app/Helpers/*' => app_path('Helpers/*'),
         ],'above8');
         
     }

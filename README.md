@@ -44,7 +44,7 @@ Add the guard for api in config\auth.php file
     ],
 ## Add validator
 
-Add the route middleware in kernel file 
+Add the route middleware in middleware aliase section on kernel file 
 
     'validateuser' =>\App\Http\Middleware\ValidateUserMiddleware::class,
 
@@ -67,6 +67,7 @@ Run the following command to publish the package files
     php artisan route:cache
 
 # Optional publish assets
+Currently after doing this the request doc url showing not found
 
     php artisan vendor:publish --tag=request-docs-assets
 
@@ -90,3 +91,10 @@ Add below mentioned variables to .env
 
     SERVER_URL=BACKEND_SERVER_URL
 
+# Composer file changes
+
+Add below snippet to autoload section in composer.json file
+
+    "files": [
+            "app/Helpers/Helper.php"
+        ]
