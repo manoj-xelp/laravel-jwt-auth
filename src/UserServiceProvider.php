@@ -125,12 +125,12 @@ class UserServiceProvider extends ServiceProvider
 
         //Publish Assets****
         $this->publishes([
-            __DIR__.'/assets/*' => public_path('assets/*'),
+            __DIR__.'/assets' => public_path('assets/'),
         ],'above8');
         
         //Publish Helpers****
         $this->publishes([
-            __DIR__.'/app/Helpers/*' => app_path('Helpers/*'),
+            __DIR__.'/app/Helpers' => app_path('Helpers/'),
         ],'above8');
         
     }
