@@ -1,6 +1,6 @@
 {
     "name": "snosborn/laraveljwtauth",
-    "version": "1.4",
+    "version": "1.5",
     "description": "This package is for user module",
     "license": "MIT",
     "require": {
