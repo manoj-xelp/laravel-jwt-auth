@@ -27,6 +27,7 @@ use App\Http\Requests\UploadFile;
 use App\Http\Requests\ForgetPassword;
 use App\Http\Requests\UserLogout;
 use App\Http\Requests\ResetPassword;
+use App\Http\Requests\ChangePassword;
 
 class UserController extends Controller
 {
@@ -471,6 +472,14 @@ class UserController extends Controller
         }
     }
 
-
+    public function changePassword(ChangePassword $request)
+    {
+        try{
+            return response()->json(['success' => false, 'message' => 'Inprogress'], 404);
+        } catch (\Exception $error) {
+            Log::error($error);
+            return response()->json(['success' => false, 'error' => 'Looks like there is an issue on our side, we are working on fixing it.'], 500);
+        }
+    }
 
 }

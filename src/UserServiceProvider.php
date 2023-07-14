@@ -108,6 +108,7 @@ class UserServiceProvider extends ServiceProvider
             __DIR__.'/app/Http/Requests/ForgetPassword.php' => app_path('Http/Requests/ForgetPassword.php'),
             __DIR__.'/app/Http/Requests/UserLogout.php' => app_path('Http/Requests/UserLogout.php'),
             __DIR__.'/app/Http/Requests/ResetPassword.php' => app_path('Http/Requests/ResetPassword.php'),
+            __DIR__.'/app/Http/Requests/ChangePassword.php' => app_path('Http/Requests/ChangePassword.php'),
         ],'above8');
 
         //Publish Models*****

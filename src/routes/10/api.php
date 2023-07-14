@@ -14,6 +14,7 @@ Route::prefix('v1')->group(function () {
         Route::group(['middleware' => ['validateuser']], function(){
             Route::post('refresh_token', [UserController::class,'refresh']);
             Route::post('logout', [UserController::class,'logout']);
+            Route::post('change_password', [UserController::class,'changePassword']);
         });
     });
     Route::prefix('users')->group(function () {
