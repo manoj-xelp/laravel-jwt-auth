@@ -301,32 +301,6 @@ class UserController extends Controller
         }
     }
 
-    public function uploadSingleFile(UploadFile $request)
-    {
-        try{
-            $upload_path = $this->constants['UNDEFINED_PATH'];
-            $type = $request->type;
-            if($type == "USER_PROFILE"){
-                $upload_path = $this->constants['USER_PROFILE_PATH'];
-            }
-            if ($request->hasFile('file')) {
-                if ($request->file('file')->isValid()) {
-                    $file_name = fileUpload($type, $request->file('file'), $upload_path);
-                    if(isset($file_name) && $file_name != -1){
-                        return response()->json(['success' => true, 'message'=>'Uploaded successfully.', 'file_name' => $file_name, 'base_url' => $this->constants['SERVER_URL'].$upload_path], 200);
-                    }else{
-                        return response()->json(['success' => false, 'error' => 'Something went wrong! Please try again later.'], 500);
-                    }
-                }
-            }else{
-                return response()->json(['success' => false, 'error' => 'File is required to upload.'], 400);
-            }
-        }catch(\Exception $error){
-            Log::error($error);
-            return response()->json(['success' => false, 'error' => 'Internal server error.'], 500);
-        }
-    }
-
     public function logout(UserLogout $request)
     {
         try{
@@ -475,7 +449,24 @@ class UserController extends Controller
     public function changePassword(ChangePassword $request)
     {
         try{
-            return response()->json(['success' => false, 'message' => 'Inprogress'], 404);
+            $user= User::where('id',$request->logged_in_user->id)->first();
+            if(!Hash::check($request->current_password, $user->password)){
+                return response()->json(['success' => false, 'error' => 'Current password is incorrect'], 400);
+            }
+
+            $update= $user->update([
+                "password" => Hash::make($request->password)
+            ]);
+
+            if($update){
+                $activity_store=ActivityLog::create([
+                    "user_id" => $request->logged_in_user->id,
+                    "activity" => "change_password",
+                    "source" => $request->source
+                ]);
+                return response()->json(['success' => true, 'message' => 'Password changed successfully.'], 200);
+            }
+            return response()->json(['success' => false, 'error' => 'Password not changed'], 500);
         } catch (\Exception $error) {
             Log::error($error);
             return response()->json(['success' => false, 'error' => 'Looks like there is an issue on our side, we are working on fixing it.'], 500);

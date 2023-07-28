@@ -1,6 +1,7 @@
 <?php 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StaticDataController;
 
 Route::prefix('v1')->group(function () {
     Route::prefix('auth')->group(function () {
@@ -25,7 +26,8 @@ Route::prefix('v1')->group(function () {
     });
     Route::prefix('files')->group(function () {
         Route::group(['middleware' => ['validateuser']], function () {
-            Route::post('upload_single', [UserController::class,'uploadSingleFile']);
+            Route::post('upload_single', [StaticDataController::class,'uploadSingleFile']);
+            Route::post('upload_multiple', [StaticDataController::class,'uploadMultiFiles']);
         });
     });
 
