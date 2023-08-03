@@ -27,10 +27,6 @@ class CreateUsersTable extends Migration
             $table->string('mobile_number')->nullable();
             $table->string('profile_pic')->nullable();
             $table->text('about_me')->nullable();
-            $table->integer('country_id')->nullable();
-            $table->integer('state_id')->nullable();
-            $table->integer('city_id')->nullable();
-            $table->string('address')->nullable();
             $table->string('referal_code')->nullable();
             $table->unsignedBigInteger('refered_by')->nullable();
             $table->foreign('refered_by')->references('id')->on('users')->onDelete('cascade');
@@ -53,3 +49,4 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('users');
     }
 }
+

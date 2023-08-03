@@ -59,13 +59,57 @@ class UserServiceProvider extends ServiceProvider
         }
 
         $filename3=$this->migrationExists('create_followers_table');
-        if ($filename2 === false) {
+        if ($filename3 === false) {
             $this->publishes([
                 __DIR__.'/database/migrations/create_followers_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_followers_table.php'),
             ], 'migrations');
         }else {
             $this->publishes([
                 __DIR__.'/database/migrations/create_followers_table.php' => database_path('migrations/' . $filename3),
+            ], 'migrations');
+        }
+
+        $filename4=$this->migrationExists('create_countries_table');
+        if ($filename4 === false) {
+            $this->publishes([
+                __DIR__.'/database/migrations/create_countries_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_countries_table.php'),
+            ], 'migrations');
+        }else {
+            $this->publishes([
+                __DIR__.'/database/migrations/create_countries_table.php' => database_path('migrations/' . $filename4),
+            ], 'migrations');
+        }
+
+        $filename5=$this->migrationExists('create_states_table');
+        if ($filename5 === false) {
+            $this->publishes([
+                __DIR__.'/database/migrations/create_states_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_states_table.php'),
+            ], 'migrations');
+        }else {
+            $this->publishes([
+                __DIR__.'/database/migrations/create_states_table.php' => database_path('migrations/' . $filename5),
+            ], 'migrations');
+        }
+
+        $filename6=$this->migrationExists('create_cities_table');
+        if ($filename6 === false) {
+            $this->publishes([
+                __DIR__.'/database/migrations/create_cities_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_cities_table.php'),
+            ], 'migrations');
+        }else {
+            $this->publishes([
+                __DIR__.'/database/migrations/create_cities_table.php' => database_path('migrations/' . $filename6),
+            ], 'migrations');
+        }
+
+        $filename7=$this->migrationExists('create_user_addresses_table');
+        if ($filename7 === false) {
+            $this->publishes([
+                __DIR__.'/database/migrations/create_user_addresses_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . 'create_user_addresses_table.php'),
+            ], 'migrations');
+        }else {
+            $this->publishes([
+                __DIR__.'/database/migrations/create_user_addresses_table.php' => database_path('migrations/' . $filename7),
             ], 'migrations');
         }
 
@@ -119,6 +163,10 @@ class UserServiceProvider extends ServiceProvider
             __DIR__.'/app/Models/ActivityLog.php' => app_path('Models/ActivityLog.php'),
             __DIR__.'/app/Models/Block.php' => app_path('Models/Block.php'),
             __DIR__.'/app/Models/Follower.php' => app_path('Models/Follower.php'),
+            __DIR__.'/app/Models/Country.php' => app_path('Models/Country.php'),
+            __DIR__.'/app/Models/State.php' => app_path('Models/State.php'),
+            __DIR__.'/app/Models/City.php' => app_path('Models/City.php'),
+            __DIR__.'/app/Models/UserAddress.php' => app_path('Models/UserAddress.php'),
         ],'above8');
 
         //Publish Mails****

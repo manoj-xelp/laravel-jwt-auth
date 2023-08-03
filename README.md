@@ -98,3 +98,11 @@ Add below snippet to autoload section in composer.json file
     "files": [
             "app/Helpers/Helper.php"
         ]
+
+# Countries,States, Cities data seeder
+
+Run the seeder for insert data into respective tables after migrations
+
+    php artisan db:seed --class=CountryStateCitySeeder
+
+Note: This seeder will take upto 30 minutes due to large data sets.
