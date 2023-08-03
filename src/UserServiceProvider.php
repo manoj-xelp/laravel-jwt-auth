@@ -28,7 +28,7 @@ class UserServiceProvider extends ServiceProvider
         $filename=$this->migrationExists('create_users_table');
         if ($filename === false) {
             $this->publishes([
-                __DIR__.'/database/migrations/create_users_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_users_table.php'),
+                __DIR__.'/database/migrations/create_users_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_1_create_users_table.php'),
             ], 'migrations');
         }else {
             $this->publishes([
@@ -39,7 +39,7 @@ class UserServiceProvider extends ServiceProvider
         $filename1=$this->migrationExists('create_activity_logs_table');
         if ($filename1 === false) {
             $this->publishes([
-                __DIR__.'/database/migrations/create_activity_logs_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_activity_logs_table.php'),
+                __DIR__.'/database/migrations/create_activity_logs_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_2_create_activity_logs_table.php'),
             ], 'migrations');
         }else {
             $this->publishes([
@@ -50,7 +50,7 @@ class UserServiceProvider extends ServiceProvider
         $filename2=$this->migrationExists('create_blocks_table');
         if ($filename2 === false) {
             $this->publishes([
-                __DIR__.'/database/migrations/create_blocks_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_blocks_table.php'),
+                __DIR__.'/database/migrations/create_blocks_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_3_create_blocks_table.php'),
             ], 'migrations');
         }else {
             $this->publishes([
@@ -61,7 +61,7 @@ class UserServiceProvider extends ServiceProvider
         $filename3=$this->migrationExists('create_followers_table');
         if ($filename3 === false) {
             $this->publishes([
-                __DIR__.'/database/migrations/create_followers_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_followers_table.php'),
+                __DIR__.'/database/migrations/create_followers_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_4_create_followers_table.php'),
             ], 'migrations');
         }else {
             $this->publishes([
@@ -72,7 +72,7 @@ class UserServiceProvider extends ServiceProvider
         $filename4=$this->migrationExists('create_countries_table');
         if ($filename4 === false) {
             $this->publishes([
-                __DIR__.'/database/migrations/create_countries_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_countries_table.php'),
+                __DIR__.'/database/migrations/create_countries_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_5_create_countries_table.php'),
             ], 'migrations');
         }else {
             $this->publishes([
@@ -83,7 +83,7 @@ class UserServiceProvider extends ServiceProvider
         $filename5=$this->migrationExists('create_states_table');
         if ($filename5 === false) {
             $this->publishes([
-                __DIR__.'/database/migrations/create_states_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_states_table.php'),
+                __DIR__.'/database/migrations/create_states_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_6_create_states_table.php'),
             ], 'migrations');
         }else {
             $this->publishes([
@@ -94,7 +94,7 @@ class UserServiceProvider extends ServiceProvider
         $filename6=$this->migrationExists('create_cities_table');
         if ($filename6 === false) {
             $this->publishes([
-                __DIR__.'/database/migrations/create_cities_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_cities_table.php'),
+                __DIR__.'/database/migrations/create_cities_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_7_create_cities_table.php'),
             ], 'migrations');
         }else {
             $this->publishes([
@@ -105,7 +105,7 @@ class UserServiceProvider extends ServiceProvider
         $filename7=$this->migrationExists('create_user_addresses_table');
         if ($filename7 === false) {
             $this->publishes([
-                __DIR__.'/database/migrations/create_user_addresses_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . 'create_user_addresses_table.php'),
+                __DIR__.'/database/migrations/create_user_addresses_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_8_create_user_addresses_table.php'),
             ], 'migrations');
         }else {
             $this->publishes([
