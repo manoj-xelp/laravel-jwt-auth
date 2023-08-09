@@ -22,6 +22,8 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0)->comment("1-active 0-pending -1-disabled");
             $table->timestamps();
             $table->softDeletes();
+
+            $table->fullText(['name']);
         });
     }
 

@@ -6,6 +6,7 @@ return [
         "USER_PROFILE"
     ],
     "USER_PROFILE_PATH" => "/users/",
+    "CITY_PATH" => "/cities/",
     "UNDEFINED_PATH" => "/undefined/",
     "SERVER_URL" => env('SERVER_URL'),
     "POST_PATH" => "/posts/",

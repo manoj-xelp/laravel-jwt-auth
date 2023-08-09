@@ -93,11 +93,13 @@ Add below mentioned variables to .env
 
 # Composer file changes
 
-Add below snippet to autoload section in composer.json file
+Add below snippet to autoload section in composer.json file.
 
     "files": [
             "app/Helpers/Helper.php"
         ]
+
+Run composer install after adding 
 
 # Countries,States, Cities data seeder
 

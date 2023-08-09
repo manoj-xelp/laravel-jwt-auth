@@ -30,5 +30,13 @@ Route::prefix('v1')->group(function () {
             Route::post('upload_multiple', [StaticDataController::class,'uploadMultiFiles']);
         });
     });
+    Route::prefix('static')->group(function () {
+        Route::group(['middleware' => ['validateuser']], function () {
+            Route::get('countries', [StaticDataController::class,'getCountries']);
+            Route::get('states', [StaticDataController::class,'getStates']);
+            Route::get('cities', [StaticDataController::class,'getCities']);
+        });
+    });
+
 
 });
