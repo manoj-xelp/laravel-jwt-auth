@@ -172,7 +172,7 @@ class UserServiceProvider extends ServiceProvider
             __DIR__.'/app/Http/Requests/ResetPassword.php' => app_path('Http/Requests/ResetPassword.php'),
             __DIR__.'/app/Http/Requests/ChangePassword.php' => app_path('Http/Requests/ChangePassword.php'),
             __DIR__.'/app/Http/Requests/UploadMultiFiles.php' => app_path('Http/Requests/UploadMultiFiles.php'),
-            __DIR__.'/app/Http/Requests/GetContries.php' => app_path('Http/Requests/GetContries.php'),
+            __DIR__.'/app/Http/Requests/GetCountries.php' => app_path('Http/Requests/GetCountries.php'),
             __DIR__.'/app/Http/Requests/GetStates.php' => app_path('Http/Requests/GetStates.php'),
             __DIR__.'/app/Http/Requests/GetCities.php' => app_path('Http/Requests/GetCities.php'),
         ],'above8');
