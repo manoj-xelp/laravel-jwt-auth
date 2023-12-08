@@ -1,6 +1,6 @@
 {
     "name": "snosborn/laraveljwtauth",
-    "version": "2.0.1",
+    "version": "2.2",
     "description": "Laravel package for user module with jwt auth and api request docs",
     "license": "MIT",
     "require": {
